@@ -12,6 +12,8 @@ Atualmente existem três arquivos compondo o projeto: **Galerkin_GUI.py**, **Est
 
 # Como utilizar a interface
 
+Em primeiro lugar, abrir o arquivo **MAIN.py** com os demais códigos no mesmo diretório, e executá-lo. 
+
 Ao abrir o programa, deve-se clicar em **New**, e logo após em **New Simulation** para que a janela de simulação se abra.
 Nesta janela, deve-se digitar todos os parâmetros desejados e, finalmente, clicar no botão **Run**.
 
