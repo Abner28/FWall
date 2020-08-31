@@ -51,6 +51,6 @@ asas flexíveis apenas quando o número de asas for 1, para fins de comparação
 10.) **Number of elements**: Número de subdivisões da envergadura (discretização). Nesse caso, o número de nós sobre a asa
 será dado por **(Number of elements + 1)**.
 
-11.) **r**: Fator de discretização. Nos relatórios utilizou-se **r = 0.1 **.
+11.) **r**: Fator de discretização. Nos relatórios utilizou-se **r = 0.1**.
 
 12.) **Uinf**: Velocidade do escoamento
