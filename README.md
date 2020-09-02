@@ -3,7 +3,7 @@ Repositório da interface gráfica e dos códigos utilizados no projeto PUB/2019
 
 Atualmente existem três arquivos compondo o projeto: **Galerkin_GUI.py**, **Esteira_GUI.py** e **MAIN.py**.
         
-1. **Galerkin_GUI.py**: Responsável pelo cálculo dos valores nodais de circulação.
+1. **Galerkin_GUI.py**: Responsável pelo cálculo dos valores nodais de circulação (em breve ).
         
 2. **Esteira_GUI.py**: Responsável pelo cálculo da esteira de vórtices, ou também uma alternativa para o cálculo da circulação,
                             utilizando **séries de Fourier.**                  
