@@ -5,6 +5,9 @@ from PyQt5.QtWidgets import QAction, QLineEdit, QMessageBox, QPushButton
 from PyQt5.QtGui import QPalette, QColor
 from PyQt5.QtCore import Qt
 import Galerkin_GUI
+import Esteira_GUI
+
+# Design das janelas:
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -26,6 +29,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionNew_simulation = QtWidgets.QAction(MainWindow)
         self.actionNew_simulation.setObjectName("actionNew_simulation")
+        self.actionNew_comparison = QtWidgets.QAction(MainWindow)
+        self.actionNew_comparison.setObjectName("actionNew_comparison")
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
         self.actionExit = QtWidgets.QAction(MainWindow)
@@ -39,6 +44,8 @@ class Ui_MainWindow(object):
         self.actionMinimize.setObjectName("actionMinimize")
         self.menuFile.addAction(self.actionNew_simulation)
         self.menuFile.addSeparator()
+        self.menuFile.addAction(self.actionNew_comparison)
+        self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
@@ -48,6 +55,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuView.menuAction())
         self.simulationWindow = start_simulation()
+        self.comparisonWindow = comparison_wing()
 
         self.retranslateUi(MainWindow)
         self.actionExit.triggered.connect(MainWindow.close)
@@ -56,6 +64,7 @@ class Ui_MainWindow(object):
         self.actionMinimize.triggered.connect(MainWindow.showMinimized)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.actionNew_simulation.triggered.connect(self.new_sim_clicked)
+        self.actionNew_comparison.triggered.connect(self.new_com_clicked)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -79,15 +88,23 @@ class Ui_MainWindow(object):
         self.actionUnmaximize.setShortcut(_translate("MainWindow", "Ctrl+U"))
         self.actionMinimize.setText(_translate("MainWindow", "Minimize"))
         self.actionMinimize.setStatusTip(_translate("MainWindow", "Minimize window"))
-        self.actionMinimize.setShortcut(_translate("MainWindow", "Ctrl+K"))
+        self.actionMinimize.setShortcut(_translate("MainWindow", "Ctrl+M"))
+        self.actionNew_comparison.setText(_translate("MainWindow", "New comparison"))
+        self.actionNew_comparison.setStatusTip(_translate("MainWindow", "Create a new comparison"))
+        self.actionNew_comparison.setShortcut(_translate("MainWindow", "Ctrl+K"))
 
     def new_sim_clicked(self):
         self.simulationWindow.show()
 
+    def new_com_clicked(self):
+        self.comparisonWindow.show()
+
+# Tela de simulações:
+
 class start_simulation(QtWidgets.QMainWindow):
     def __init__(self):
         super(start_simulation,self).__init__()
-        self.resize(720, 540)
+        self.resize(720, 670)
         self.setWindowTitle("Simulation Window")
         
         self.label_1 = QtWidgets.QLabel(self)
@@ -102,11 +119,15 @@ class start_simulation(QtWidgets.QMainWindow):
         self.label_10 = QtWidgets.QLabel(self)
         self.label_11 = QtWidgets.QLabel(self)
         self.label_12 = QtWidgets.QLabel(self)
+        self.label_13 = QtWidgets.QLabel(self)
         self.runButton = QPushButton("Run",self)
+        self.run2Button = QPushButton("Vortex sheet",self)
 
 
         self.runButton.move(435,400)
-        self.runButton.resize(200,100)
+        self.runButton.resize(200,80)
+        self.run2Button.move(435,500)
+        self.run2Button.resize(200,80)
         
 
         self.label_1.setText("Parameters")
@@ -223,8 +244,25 @@ class start_simulation(QtWidgets.QMainWindow):
         self.textbox12.move(535,205)
         self.textbox12.setFont(QtGui.QFont("times",14))
         
+     
+
+        self.label_13.setText("Uinf [m/s]:")
+        self.label_13.move(450,260)
+        self.label_13.setFont(QtGui.QFont("Arial", 12))
+
+        self.textbox13 = QLineEdit(self)
+        self.textbox13.move(535,265)
+        self.textbox13.setFont(QtGui.QFont("times",14))
+        
+
+
         self.runButton.clicked.connect(self.on_click)
         self.runButton.clicked.connect(self.call_Galerkin_def)
+
+        #self.run2Button.clicked.connect(self.on_click)
+        self.run2Button.clicked.connect(self.call_Vortex_sheet)
+
+
 
     def on_click(self):
 
@@ -239,18 +277,37 @@ class start_simulation(QtWidgets.QMainWindow):
         self.wing_type = self.textbox10.text()
         self.Nelem = int(self.textbox11.text())
         self.r = float(self.textbox12.text())
-        return #self.Nwings, span, AoA_user, y_offset_user, z_offset_user, elem_type, mesh_type, plot_together, wing_type, Nelem, r
+        self.Uinf = float(self.textbox13.text())
+        return #self.Nwings, self.span, self.AoA_user, self.y_offset_user, self.z_offset_user, self.elem_type, self.mesh_type, self.plot_together, self.wing_type, self.Nelem, self.r, self.Uinf
     
     def call_Galerkin_def(self):
         Galerkin_GUI.call_Galerkin(self.Nwings, self.span, self.AoA_user, self.y_offset_user,
-         self.z_offset_user, self.elem_type, self.mesh_type, self.plot_together, self.wing_type, self.Nelem, self.r)    
+         self.z_offset_user, self.elem_type, self.mesh_type, self.plot_together, self.wing_type, self.Nelem, self.r,self.Uinf)    
 
+    def call_Vortex_sheet(self):
+        Esteira_GUI.call_Vortex_sheet(self.Nelem, self.wing_type,self.Nwings)
+
+
+# Tela de comparações:
+
+class comparison_wing(QtWidgets.QMainWindow):
+    """docstring for comparison_wing"""
+    def __init__(self):
+        super(comparison_wing, self).__init__()
+        self.resize(720, 540)
+        self.setWindowTitle("Comparison Window")   
+
+
+
+            
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
+
+    # Aparência:
+
     app.setStyle("Fusion")
     dark_palette = QPalette()
-
     dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
     dark_palette.setColor(QPalette.WindowText, Qt.white)
     dark_palette.setColor(QPalette.Base, QColor(25, 25, 25))
@@ -264,10 +321,10 @@ if __name__ == "__main__":
     dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
     dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
     dark_palette.setColor(QPalette.HighlightedText, Qt.black)
-
     app.setPalette(dark_palette)
-
     app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
+
+    # RUN:
 
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
