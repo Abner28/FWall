@@ -6,6 +6,7 @@ from PyQt5.QtGui import QPalette, QColor
 from PyQt5.QtCore import Qt
 import Galerkin_GUI
 import Esteira_GUI
+import Galerkin_GUI_comparison
 
 # Design das janelas:
 
@@ -106,6 +107,7 @@ class start_simulation(QtWidgets.QMainWindow):
         super(start_simulation,self).__init__()
         self.resize(720, 670)
         self.setWindowTitle("Simulation Window")
+        self.compare = False
         
         self.label_1 = QtWidgets.QLabel(self)
         self.label_2 = QtWidgets.QLabel(self)
@@ -296,6 +298,7 @@ class comparison_wing(QtWidgets.QMainWindow):
         super(comparison_wing, self).__init__()
         self.resize(720, 680)
         self.setWindowTitle("Comparison Window") 
+        self.compare = True
 
         # Botão:
 
@@ -303,6 +306,8 @@ class comparison_wing(QtWidgets.QMainWindow):
         self.run3Button.move(330,620)
         self.run3Button.resize(100,50)
 
+        self.run3Button.clicked.connect(self.on_click)
+        self.run3Button.clicked.connect(self.call_Galerkin_def)
 
         # CASE 1:
 
@@ -330,9 +335,9 @@ class comparison_wing(QtWidgets.QMainWindow):
         self.label_1_2.setFont(QtGui.QFont("Arial",12))
         self.label_1_2.adjustSize()
 
-        self.textbox1_2 = QLineEdit(self)
-        self.textbox1_2.setFont(QtGui.QFont("times",14))
-        self.textbox1_2.move(200,100)
+        self.textbox_1_2 = QLineEdit(self)
+        self.textbox_1_2.setFont(QtGui.QFont("times",14))
+        self.textbox_1_2.move(200,100)
            
         self.label_1_3.setText("Wing span [m]:")
         self.label_1_3.move(50,155)
@@ -587,16 +592,23 @@ class comparison_wing(QtWidgets.QMainWindow):
         self.r_2 = float(self.textbox_2_12.text())
         self.Uinf_2 = float(self.textbox_2_13.text())
 
+        self.plot_together_1 = False
+        self.plot_together_2 = False
+
 
         return #self.Nwings, self.span, self.AoA_user, self.y_offset_user, self.z_offset_user, self.elem_type, self.mesh_type, self.plot_together, self.wing_type, self.Nelem, self.r, self.Uinf
     
     def call_Galerkin_def(self):
-        Galerkin_GUI.call_Galerkin(self.Nwings, self.span, self.AoA_user, self.y_offset_user,
-         self.z_offset_user, self.elem_type, self.mesh_type, self.plot_together, self.wing_type, self.Nelem, self.r,self.Uinf)    
+        Galerkin_GUI_comparison.call_Galerkin_comparison(self.Nwings_1, self.span_1, self.AoA_user_1, self.y_offset_user_1,
+         self.z_offset_user_1, self.elem_type_1, self.mesh_type_1, self.plot_together_1, self.wing_type_1,
+          self.Nelem_1, self.r_1,self.Uinf_1,self.Nwings_2, self.span_2, self.AoA_user_2, self.y_offset_user_2,
+         self.z_offset_user_2, self.elem_type_2, self.mesh_type_2, self.plot_together_2, self.wing_type_2,
+          self.Nelem_2, self.r_2,self.Uinf_2)    
 
+    '''
     def call_Vortex_sheet(self):
         Esteira_GUI.call_Vortex_sheet(self.Nelem, self.wing_type,self.Nwings)
-
+	'''
 
 
 

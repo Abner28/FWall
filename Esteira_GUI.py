@@ -196,7 +196,7 @@ def call_Vortex_sheet(Nelem, wing_type,Nwings):
     else:
         
         def posprocessement():
-            coords = pd.read_csv("C:\\Users\\Administrador\\Desktop\\Qt Projects\\FWall\\coords", sep = ",", header = None)
+            coords = pd.read_csv("C:\\Users\\Administrador\\Desktop\\Qt Projects\\FWall\\coords.txt", sep = ",", header = None)
             y = coords.iloc[:,0]
             z = coords.iloc[:,1]
             
@@ -204,7 +204,7 @@ def call_Vortex_sheet(Nelem, wing_type,Nwings):
         
         def aerodynamics(y):
             
-            circ =  pd.read_csv("C:\\Users\\Administrador\\Desktop\\Qt Projects\\FWall\\circulation", sep = ",", header = None)
+            circ =  pd.read_csv("C:\\Users\\Administrador\\Desktop\\Qt Projects\\FWall\\circulation.txt", sep = ",", header = None)
             G = circ.iloc[:,0]
             
             
