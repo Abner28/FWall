@@ -54,3 +54,7 @@ será dado por **(Number of elements + 1)**.
 11.) **r**: Fator de discretização. Nos relatórios utilizou-se **r = 0.1**.
 
 12.) **Uinf**: Velocidade do escoamento
+
+# Janela de comparação:
+
+A aba de comparação seguirá a mesma lógica anterior, onde a comparação se dará por meio dos valores nodais de circulação.
